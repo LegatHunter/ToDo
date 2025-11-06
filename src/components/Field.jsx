@@ -1,6 +1,13 @@
-export default function Field({ children, id, type }) {
+export default function Field({
+  children,
+  id,
+  type = "text",
+  className,
+  input,
+  value,
+}) {
   return (
-    <div className='todo__field field'>
+    <div className={`field ${className}`}>
       <label className='field__label' htmlFor={id}>
         {children}
       </label>
@@ -10,6 +17,8 @@ export default function Field({ children, id, type }) {
         placeholder=' '
         autoComplete='off'
         type={type}
+        onInput={input}
+        value={value}
       />
     </div>
   )
