@@ -1,14 +1,15 @@
 import Field from "./Field"
 
-export default function SearchTaskForm({ filterTasks }) {
+export default function SearchTaskForm({ searchQuery, setSearchQuery }) {
   return (
     <form className='todo__form' onSubmit={(event) => event.preventDefault()}>
       <Field
-        children='Search task'
+        children='Поиск'
         id='search-task'
         type='search'
         className='todo__field'
-        onInput={(event) => filterTasks(event.target.value)}
+        value={searchQuery}
+        onInput={(event) => setSearchQuery(event.target.value)}
       />
     </form>
   )

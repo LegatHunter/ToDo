@@ -13,14 +13,14 @@ export default function AddTaskForm({
   return (
     <form className='todo__form' onSubmit={onSubmit}>
       <Field
-        children='New task'
+        children='Новая задача'
         id='new-task'
         className='todo__field'
         value={newTaskTitle}
-        input={(event) => setNewTaskTitle(event.target.value)}
+        onInput={(event) => setNewTaskTitle(event.target.value)}
       />
       <Button type='submit' onClick={() => addTask()}>
-        Add
+        Добавить
       </Button>
     </form>
   )

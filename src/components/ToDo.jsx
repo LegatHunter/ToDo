@@ -1,30 +1,38 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import SearchTaskForm from "./SearchTaskForm.jsx"
 import AddTaskForm from "./AddTaskForm.jsx"
 import ToDoInfo from "./ToDoInfo.jsx"
 import ToDoList from "./ToDoList.jsx"
 
 export default function ToDo() {
-  const [taskList, setTaskList] = useState([
-    { id: 1, isDone: true, title: "One" },
-    { id: 2, isDone: false, title: "Two" },
-  ])
+  const [taskList, setTaskList] = useState(() => {
+    const savedTasks = localStorage.getItem("tasks")
+    if (savedTasks) {
+      return JSON.parse(savedTasks)
+    }
+    return []
+  })
   const [newTaskTitle, setNewTaskTitle] = useState("")
+  const [searchQuery, setSearchQuery] = useState("")
 
   const deleteAllTasks = () => {
-    setTaskList([])
+    const isConfirmed = confirm("Точно?")
+    isConfirmed && setTaskList([])
   }
 
-  const deleteTask = (taskId) => {
-    setTaskList((prevTask) => prevTask.filter((_, i) => i !== taskId))
+  const deleteTask = (id) => {
+    setTaskList(taskList.filter((task) => task.id !== id))
   }
 
   const toggleTaskComplete = (taskId, isDone) => {
-    console.log(`${taskId} ${isDone ? "Выполнено" : "Не выполнено"}`)
-  }
-
-  const filterTasks = (query) => {
-    console.log(query)
+    setTaskList(
+      taskList.map((task) => {
+        if (task.id === taskId) {
+          return { ...task, isDone }
+        }
+        return task
+      })
+    )
   }
 
   const addTask = () => {
@@ -36,8 +44,21 @@ export default function ToDo() {
       }
       setTaskList([...taskList, newTask])
       setNewTaskTitle("")
+      setSearchQuery("")
     }
   }
+
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(taskList))
+  }, [taskList])
+
+  const clearSearchQuery = searchQuery.trim().toLowerCase()
+  const filteredTasks =
+    clearSearchQuery.length > 0
+      ? taskList.filter(({ title }) =>
+          title.toLowerCase().includes(clearSearchQuery)
+        )
+      : null
 
   return (
     <div className='todo'>
@@ -47,10 +68,14 @@ export default function ToDo() {
         newTaskTitle={newTaskTitle}
         setNewTaskTitle={setNewTaskTitle}
       />
-      <SearchTaskForm filterTasks={filterTasks} />
+      <SearchTaskForm
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+      />
       <ToDoInfo taskList={taskList} deleteAllTasks={deleteAllTasks} />
       <ToDoList
         taskList={taskList}
+        filteredTasks={filteredTasks}
         deleteTask={deleteTask}
         toggleTaskComplete={toggleTaskComplete}
       />

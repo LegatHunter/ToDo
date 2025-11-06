@@ -3,7 +3,7 @@ export default function Field({
   id,
   type = "text",
   className,
-  input,
+  onInput,
   value,
 }) {
   return (
@@ -17,7 +17,7 @@ export default function Field({
         placeholder=' '
         autoComplete='off'
         type={type}
-        onInput={input}
+        onInput={onInput}
         value={value}
       />
     </div>

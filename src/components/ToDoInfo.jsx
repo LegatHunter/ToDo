@@ -3,14 +3,14 @@ export default function ToDoInfo({ taskList, deleteAllTasks }) {
   return (
     <div className='todo__info'>
       <div className='todo__total-tasks'>
-        Total tasks: <span>{taskList.length}</span>
+        Всего задач: <span>{taskList.length}</span>
       </div>
       {hasTasks && (
         <button
           className={`todo__delete-all-button`}
           type='button'
           onClick={deleteAllTasks}>
-          Delete all
+          Удалить все
         </button>
       )}
     </div>
