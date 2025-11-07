@@ -5,6 +5,7 @@ export default function AddTaskForm({
   addTask,
   newTaskTitle,
   setNewTaskTitle,
+  newTaskInputRef,
 }) {
   const onSubmit = (event) => {
     event.preventDefault()
@@ -17,6 +18,7 @@ export default function AddTaskForm({
         id='new-task'
         className='todo__field'
         value={newTaskTitle}
+        ref={newTaskInputRef}
         onInput={(event) => setNewTaskTitle(event.target.value)}
       />
       <Button type='submit' onClick={() => addTask()}>

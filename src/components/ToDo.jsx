@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import SearchTaskForm from "./SearchTaskForm.jsx"
 import AddTaskForm from "./AddTaskForm.jsx"
 import ToDoInfo from "./ToDoInfo.jsx"
 import ToDoList from "./ToDoList.jsx"
+import Button from "./Button.jsx"
 
 export default function ToDo() {
   const [taskList, setTaskList] = useState(() => {
@@ -14,6 +15,9 @@ export default function ToDo() {
   })
   const [newTaskTitle, setNewTaskTitle] = useState("")
   const [searchQuery, setSearchQuery] = useState("")
+  const newTaskInputRef = useRef(null)
+  const firsIncompleteTaskRef = useRef(null)
+  const firsIncompleteTaskId = taskList.find(({ isDone }) => !isDone)?.id
 
   const deleteAllTasks = () => {
     const isConfirmed = confirm("Точно?")
@@ -45,12 +49,17 @@ export default function ToDo() {
       setTaskList([...taskList, newTask])
       setNewTaskTitle("")
       setSearchQuery("")
+      newTaskInputRef.current.focus()
     }
   }
 
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(taskList))
   }, [taskList])
+
+  useEffect(() => {
+    newTaskInputRef.current.focus()
+  }, [])
 
   const clearSearchQuery = searchQuery.trim().toLowerCase()
   const filteredTasks =
@@ -67,15 +76,24 @@ export default function ToDo() {
         addTask={addTask}
         newTaskTitle={newTaskTitle}
         setNewTaskTitle={setNewTaskTitle}
+        newTaskInputRef={newTaskInputRef}
       />
       <SearchTaskForm
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
       />
       <ToDoInfo taskList={taskList} deleteAllTasks={deleteAllTasks} />
+      <Button
+        onClick={() =>
+          firsIncompleteTaskRef.current?.scrollIntoView({ behavior: "smooth" })
+        }>
+        Первая невыполненная задача
+      </Button>
       <ToDoList
         taskList={taskList}
         filteredTasks={filteredTasks}
+        firsIncompleteTaskRef={firsIncompleteTaskRef}
+        firsIncompleteTaskId={firsIncompleteTaskId}
         deleteTask={deleteTask}
         toggleTaskComplete={toggleTaskComplete}
       />

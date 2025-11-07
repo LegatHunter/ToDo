@@ -5,6 +5,7 @@ export default function Field({
   className,
   onInput,
   value,
+  ref,
 }) {
   return (
     <div className={`field ${className}`}>
@@ -19,6 +20,7 @@ export default function Field({
         type={type}
         onInput={onInput}
         value={value}
+        ref={ref}
       />
     </div>
   )

@@ -5,9 +5,10 @@ export default function ToDoItem({
   isDone,
   deleteTask,
   toggleTaskComplete,
+  ref,
 }) {
   return (
-    <li className={`todo__item ${className}`}>
+    <li className={`todo__item ${className}`} ref={ref}>
       <input
         className='todo-item__checkbox'
         id={id}

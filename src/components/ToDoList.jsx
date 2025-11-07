@@ -5,6 +5,8 @@ export default function ToDoList({
   deleteTask,
   toggleTaskComplete,
   filteredTasks,
+  firsIncompleteTaskRef,
+  firsIncompleteTaskId,
 }) {
   const hasTasks = taskList.length > 0
   const isEmptyFilteredTasks = filteredTasks?.length === 0
@@ -26,6 +28,9 @@ export default function ToDoList({
             className='todo-item'
             deleteTask={deleteTask}
             toggleTaskComplete={toggleTaskComplete}
+            ref={
+              task.id === firsIncompleteTaskId ? firsIncompleteTaskRef : null
+            }
           />
         )
       })}
